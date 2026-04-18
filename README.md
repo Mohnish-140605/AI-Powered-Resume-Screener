@@ -11,6 +11,20 @@ AI Resume Screener is a full-stack internal hiring tool that evaluates multiple 
 - Dark mode with persisted preference
 - Real-time recruiter chat using SSE streaming responses from FastAPI
 
+## Architecture
+
+```mermaid
+graph TD
+    Client[React Frontend] -->|PDF Upload| API[FastAPI Backend]
+    API -->|Extract Text| PyPDF[pdfplumber]
+    PyPDF --> API
+    API -->|Prompt + Text| LLM[Google Gemini / LLM API]
+    LLM -->|JSON Schema Response| API
+    API -->|SSE Streaming| Client
+    Client -->|Local Caching| Cache[(Browser LocalStorage)]
+    API -->|Local Caching| BackendCache[(In-Memory Cache)]
+```
+
 ## Backend Setup
 
 ```bash
