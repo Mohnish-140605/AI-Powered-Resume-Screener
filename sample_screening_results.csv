@@ -1,0 +1,5 @@
+Rank,Candidate Name,Match Score,Experience,Skills,Semantic Fit,Core Strengths,Identified Gaps
+1,Alex Mercer,92,95,90,92,"Expert in Python & FastAPI; Strong system design; Led 3 successful migrations","Lacks recent frontend experience"
+2,Samantha Carter,88,85,92,87,"Deep React & TypeScript knowledge; Excellent UI/UX intuition; Vercel deployment expert","No prior experience with GraphQL"
+3,Jordan Lee,79,75,80,82,"Solid full-stack fundamentals; Good problem-solving skills; Quick learner","Entry-level experience; Needs more exposure to microservices"
+4,Casey Smith,65,70,60,65,"Basic knowledge of JavaScript; Enthusiastic team player","Missing core backend framework experience; Needs SQL training"
