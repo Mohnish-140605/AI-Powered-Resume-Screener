@@ -30,7 +30,7 @@ async def screen_candidates(
                 raise HTTPException(status_code=400, detail=f"{file.filename} is empty.")
 
             file_hash = compute_hash(file_bytes)
-            cached_result = get_cached(file_hash)
+            cached_result = await get_cached(file_hash)
             if cached_result:
                 results.append(cached_result)
                 continue
@@ -42,7 +42,7 @@ async def screen_candidates(
                     job_description=job_description,
                     file_hash=file_hash,
                 )
-                set_cached(file_hash, screened)
+                await set_cached(file_hash, screened)
                 results.append(screened)
             except ValueError as exc:
                 raise HTTPException(status_code=400, detail=f"{file.filename}: {exc}") from exc

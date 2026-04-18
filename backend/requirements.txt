@@ -5,3 +5,5 @@ pdfplumber
 google-generativeai
 python-dotenv
 pydantic
+
+motor
