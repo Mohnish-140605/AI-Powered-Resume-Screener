@@ -99,14 +99,18 @@ export function ChatPanel({ resumeContext, disabled, useBrowserAI }: ChatPanelPr
               <div className={`msg-bubble ${msg.role} prose-sm`}>
                 <ReactMarkdown
                   components={{
-                    p: ({node, ...props}) => <p style={{margin: "0 0 0.5em 0"}} {...props} />,
+                    p: ({node, ...props}) => <p style={{margin: "0 0 0.5em 0", display: "inline"}} {...props} />,
                     ul: ({node, ...props}) => <ul style={{margin: "0 0 0.5em 0", paddingLeft: "1.5em"}} {...props} />,
                     li: ({node, ...props}) => <li style={{margin: "0"}} {...props} />
                   }}
                 >
                   {msg.content}
                 </ReactMarkdown>
-                {showCursor && i === messages.length - 1 && <span className="typing-cursor" />}
+                {showCursor && i === messages.length - 1 && (
+                  <span className="typing-dots-inline">
+                    <span/><span/><span/>
+                  </span>
+                )}
               </div>
             </motion.div>
           ))}
@@ -122,36 +126,25 @@ export function ChatPanel({ resumeContext, disabled, useBrowserAI }: ChatPanelPr
             type="text"
             className="chat-input"
             value={input}
-            disabled={disabled || streaming}
+            disabled={streaming}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void handleSend(input); } }}
-            placeholder={disabled ? "Screen resumes to unlock..." : "Ask about the candidates..."}
+            placeholder="Ask about the candidates..."
           />
-          <button
+          <motion.button
             id="chat-send-btn"
             type="button"
             className="chat-send-btn"
-            disabled={disabled || streaming || !input.trim()}
+            disabled={streaming || !input.trim()}
             onClick={() => void handleSend(input)}
             aria-label="Send message"
+            whileHover={!(streaming || !input.trim()) ? { scale: 1.05 } : {}}
+            whileTap={!(streaming || !input.trim()) ? { scale: 0.9 } : {}}
           >
             <Send size={16} strokeWidth={2} />
-          </button>
+          </motion.button>
         </div>
       </div>
-
-      {/* Locked overlay */}
-      <AnimatePresence>
-        {disabled && (
-          <motion.div className="chat-locked" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="chat-locked-icon"><BrainCircuit size={32} strokeWidth={1} /></div>
-            <div>
-              <p className="chat-locked-title">Awaiting Neural Input</p>
-              <p className="chat-locked-sub">Upload &amp; screen resumes to activate</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

@@ -8,33 +8,33 @@ const config: Config = {
       colors: {
         // Obsidian Nexus surface hierarchy
         void: {
-          base:    "#0d0d1a",  // deepest — page bg
-          low:     "#12121f",  // surface base
-          mid:     "#1a1a28",  // cards / panels
-          high:    "#292937",  // elevated / hover
-          highest: "#343342",  // popovers / focused
+          base:    "var(--bg-base)",
+          low:     "var(--bg-low)",
+          mid:     "var(--bg-mid)",
+          high:    "var(--bg-high)",
+          highest: "var(--bg-highest)",
         },
         // Legacy space tokens (kept for backward compat)
         space: {
-          900: "#0d0d1a",
-          800: "#1a1a28",
-          700: "#292937",
+          900: "var(--bg-base)",
+          800: "var(--bg-mid)",
+          700: "var(--bg-high)",
         },
         // Accent palette
         neon: {
-          indigo:  "#c0c1ff",  // primary accent
-          violet:  "#d0bcff",  // secondary / AI moments
-          cyan:    "#06b6d4",  // high-score indicators
-          amber:   "#f59e0b",  // gaps / warnings
-          emerald: "#10b981",  // strengths / success
-          pink:    "#ffb783",  // tertiary
+          indigo:  "var(--accent)",
+          violet:  "var(--violet)",
+          cyan:    "var(--cyan)",
+          amber:   "var(--amber)",
+          emerald: "var(--emerald)",
+          pink:    "var(--red)",
         },
         // Text hierarchy
         ink: {
-          high: "#e3e0f3",   // primary text
-          mid:  "#c7c4d7",   // secondary text
-          low:  "#8c8a9e",   // muted / placeholders
-          faint:"#464554",   // very muted
+          high: "var(--text-high)",
+          mid:  "var(--text-mid)",
+          low:  "var(--text-low)",
+          faint:"var(--text-faint)",
         },
       },
       fontFamily: {
@@ -42,9 +42,9 @@ const config: Config = {
         mono: ["JetBrains Mono", "Fira Code", "monospace"],
       },
       backgroundImage: {
-        "gradient-cta":   "linear-gradient(135deg, #8083ff, #d0bcff)",
-        "gradient-title": "linear-gradient(90deg, #c0c1ff, #d0bcff)",
-        "gradient-top":   "linear-gradient(135deg, #c0c1ff, #06b6d4)",
+        "gradient-cta":   "linear-gradient(135deg, var(--accent), var(--violet))",
+        "gradient-title": "linear-gradient(90deg, var(--accent), var(--cyan))",
+        "gradient-top":   "linear-gradient(135deg, var(--accent), var(--emerald))",
       },
       boxShadow: {
         "glow-indigo": "0 0 24px rgba(192,193,255,0.25)",

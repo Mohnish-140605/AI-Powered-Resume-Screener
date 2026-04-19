@@ -18,6 +18,7 @@ export function UploadZone({ files, setFiles, jobDescription, setJobDescription,
     setFiles([...files, ...newFiles]);
   };
   const removeFile = (name: string): void => setFiles(files.filter((f) => f.name !== name));
+  const clearAllFiles = (): void => setFiles([]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -33,16 +34,28 @@ export function UploadZone({ files, setFiles, jobDescription, setJobDescription,
       {/* Drop Zone */}
       <div>
         <p className="section-label">Resume Upload</p>
-        <div {...getRootProps()} id="resume-dropzone" className={`dropzone ${isDragActive ? "active" : ""}`}>
+        <motion.div 
+          {...getRootProps()} 
+          id="resume-dropzone" 
+          className={`dropzone ${isDragActive ? "active" : ""}`}
+          whileHover={{ scale: 1.01, backgroundColor: "var(--bg-high)" }}
+          whileTap={{ scale: 0.98 }}
+          animate={isDragActive ? { scale: 1.02, borderColor: "var(--accent)" } : { scale: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
           <input {...getInputProps()} />
-          <div className="dropzone-icon">
+          <motion.div 
+            className="dropzone-icon"
+            animate={isDragActive ? { y: -5 } : { y: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 10 }}
+          >
             <UploadCloud size={24} strokeWidth={1.5} />
-          </div>
+          </motion.div>
           <p className="dropzone-text">
             {isDragActive ? "Release to upload resumes..." : "Drag & drop PDF resumes, or click to browse"}
           </p>
           <p className="dropzone-sub">PDF files only · Multiple supported</p>
-        </div>
+        </motion.div>
       </div>
 
       {/* File List */}
@@ -55,7 +68,14 @@ export function UploadZone({ files, setFiles, jobDescription, setJobDescription,
             transition={{ duration: 0.25 }}
             style={{ overflow: "hidden" }}
           >
-            <p className="section-label">{files.length} File{files.length !== 1 ? "s" : ""} Queued</p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+              <p className="section-label" style={{ marginBottom: 0 }}>{files.length} File{files.length !== 1 ? "s" : ""} Queued</p>
+              {files.length > 1 && (
+                <button type="button" onClick={clearAllFiles} className="text-xs font-semibold text-ink-mid hover:text-red-500 transition-colors">
+                  Clear All
+                </button>
+              )}
+            </div>
             <div className="file-list">
               {files.map((file, i) => (
                 <motion.div
@@ -97,19 +117,34 @@ export function UploadZone({ files, setFiles, jobDescription, setJobDescription,
       </div>
 
       {/* CTA */}
-      <button id="start-screening-btn" type="button" className="btn-cta" disabled={disabled} onClick={() => void submitScreening()}>
-        {loading ? (
-          <><Loader2 size={16} className="spin" /> Analyzing Resumes...</>
-        ) : (
-          <><span>⚡</span> Start AI Screening</>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <motion.button 
+          id="start-screening-btn" 
+          type="button" 
+          className="btn-cta" 
+          disabled={disabled} 
+          onClick={() => void submitScreening()}
+          whileHover={!disabled ? { scale: 1.015, boxShadow: "0 10px 25px -5px var(--accent-glow)" } : {}}
+          whileTap={!disabled ? { scale: 0.98 } : {}}
+        >
+          {loading ? (
+            <><Loader2 size={16} className="spin" /> Analyzing Resumes...</>
+          ) : (
+            "Analyze Candidates"
+          )}
+        </motion.button>
+        {disabled && !loading && (
+          <p className="text-center text-[11px] font-medium text-ink-faint">
+            * Please add resumes and a job description to begin analysis.
+          </p>
         )}
-      </button>
+      </div>
 
       {/* Error */}
       <AnimatePresence>
         {error && (
           <motion.div className="error-box" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-            <span>⚠</span><span>{error}</span>
+            <span>⚠</span><span style={{ flex: 1 }}>{error}</span>
           </motion.div>
         )}
       </AnimatePresence>

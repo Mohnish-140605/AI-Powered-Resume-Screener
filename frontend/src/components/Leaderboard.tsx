@@ -20,19 +20,25 @@ export function Leaderboard({ results }: LeaderboardProps): JSX.Element {
   }, [results, sortMode]);
 
   const exportCsv = (): void => {
-    const headers = ["Rank","Name","Grade","Overall Score","Experience Score","Skills Score","Semantic Score","Experience Years","Score Reasoning","Matched Skills","Missing Skills","Summary","Strengths","Gaps"];
+    const headers = [
+      "Final Rank", "Candidate Full Name", "Match Grade", "Overall Fit Score", 
+      "Experience Alignment", "Technical Skills Match", "Semantic Context Score", 
+      "Years of Experience", "AI's Reasoning for this Score", 
+      "Skills They Have", "Skills They Are Missing", 
+      "AI Executive Summary", "Top Strengths to Note", "Areas for Improvement (Gaps)"
+    ];
     const rows = sortedResults.map((c, i) => [
-      String(i + 1), c.candidate_name, c.evaluation_grade, `${c.match_score}/100`,
+      `#${i + 1}`, c.candidate_name, c.evaluation_grade, `${c.match_score}% Match`,
       `${c.experience_score}/100`, `${c.skills_score}/100`, `${c.semantic_score}/100`,
-      String(c.experience_years), c.score_reasoning,
-      (c.matched_skills ?? []).join("; "), (c.missing_skills ?? []).join("; "),
-      c.summary, c.strengths.join(" | "), c.gaps.join(" | "),
+      `${c.experience_years} Years`, c.score_reasoning,
+      (c.matched_skills ?? []).join(" • "), (c.missing_skills ?? []).join(" • "),
+      c.summary, c.strengths.join("\n- "), c.gaps.join("\n- ")
     ]);
-    const csvText = [headers, ...rows].map((row) => row.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(",")).join("\n");
+    const csvText = [headers, ...rows].map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([csvText], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = url; link.download = "resume_screener_results.csv"; link.click();
+    link.href = url; link.download = "TalentMatch_AI_Candidate_Report.csv"; link.click();
     URL.revokeObjectURL(url);
   };
 
@@ -57,7 +63,7 @@ export function Leaderboard({ results }: LeaderboardProps): JSX.Element {
       <motion.div
         style={{ 
           display: "grid", 
-          gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))", 
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 350px), 1fr))", 
           gap: "16px",
           alignItems: "start"
         }}
@@ -67,7 +73,16 @@ export function Leaderboard({ results }: LeaderboardProps): JSX.Element {
         {sortedResults.map((candidate, index) => (
           <motion.div
             key={candidate.file_hash}
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 14 } } }}
+            layout
+            variants={{ 
+              hidden: { opacity: 0, y: 30, scale: 0.95 }, 
+              visible: { 
+                opacity: 1, 
+                y: 0, 
+                scale: 1,
+                transition: { type: "spring", stiffness: 140, damping: 12, mass: 0.8 } 
+              } 
+            }}
           >
             <CandidateCard
               candidate={candidate}
