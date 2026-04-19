@@ -34,16 +34,16 @@ export function UploadZone({ files, setFiles, jobDescription, setJobDescription,
       {/* Drop Zone */}
       <div>
         <p className="section-label">Resume Upload</p>
-        <motion.div 
-          {...getRootProps()} 
-          id="resume-dropzone" 
-          className={`dropzone ${isDragActive ? "active" : ""}`}
-          whileHover={{ scale: 1.01, backgroundColor: "var(--bg-high)" }}
-          whileTap={{ scale: 0.98 }}
-          animate={isDragActive ? { scale: 1.02, borderColor: "var(--accent)" } : { scale: 1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        >
+        <div {...getRootProps()} style={{ outline: 'none', cursor: 'pointer' }}>
           <input {...getInputProps()} />
+          <motion.div 
+            id="resume-dropzone" 
+            className={`dropzone ${isDragActive ? "active" : ""}`}
+            whileHover={{ scale: 1.01, backgroundColor: "var(--bg-high)" }}
+            whileTap={{ scale: 0.98 }}
+            animate={isDragActive ? { scale: 1.02, borderColor: "var(--accent)" } : { scale: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
           <motion.div 
             className="dropzone-icon"
             animate={isDragActive ? { y: -5 } : { y: 0 }}
@@ -56,6 +56,7 @@ export function UploadZone({ files, setFiles, jobDescription, setJobDescription,
           </p>
           <p className="dropzone-sub">PDF files only · Multiple supported</p>
         </motion.div>
+        </div>
       </div>
 
       {/* File List */}
