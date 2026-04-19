@@ -29,7 +29,7 @@ async def screen_candidates(
             if not file_bytes:
                 raise HTTPException(status_code=400, detail=f"{file.filename} is empty.")
 
-            file_hash = compute_hash(file_bytes)
+            file_hash = compute_hash(file_bytes, job_description)
             cached_result = await get_cached(file_hash)
             if cached_result:
                 results.append(cached_result)

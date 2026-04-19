@@ -14,8 +14,9 @@ if MONGO_URI:
     # Use database named "resume_screener", collection "candidates"
     db_collection = db_client.resume_screener.candidates
 
-def compute_hash(file_bytes: bytes) -> str:
-    return hashlib.md5(file_bytes).hexdigest()
+def compute_hash(file_bytes: bytes, job_description: str = "") -> str:
+    combined = file_bytes + job_description.encode("utf-8")
+    return hashlib.md5(combined).hexdigest()
 
 async def get_cached(file_hash: str) -> CandidateResult | None:
     if db_collection is not None:

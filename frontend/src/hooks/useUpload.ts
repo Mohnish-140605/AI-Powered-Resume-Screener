@@ -97,8 +97,18 @@ export function useUpload(useBrowserAI: boolean): UseUploadReturn {
         const newResults: CandidateResult[] = [];
 
         // 2. Loop over extracted items and screen in browser
+        const hashString = (str: string) => {
+          let hash = 0;
+          for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = (hash << 5) - hash + char;
+            hash |= 0;
+          }
+          return hash.toString();
+        };
+
         for (const item of extractedItems) {
-          const cacheKey = `screener_cache_${item.file_hash}`;
+          const cacheKey = `screener_cache_${item.file_hash}_${hashString(jobDescription)}`;
           const cached = localStorage.getItem(cacheKey);
           if (cached) {
             try {
