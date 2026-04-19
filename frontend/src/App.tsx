@@ -88,46 +88,51 @@ export default function App(): JSX.Element {
       </motion.header>
 
       {/* ── Content ── */}
-      <div className="content-grid">
-        {/* Left column */}
-        <motion.div
-          className="left-col"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <UploadZone
-            files={files}
-            setFiles={setFiles}
-            jobDescription={jobDescription}
-            setJobDescription={setJobDescription}
-            loading={loading}
-            error={error}
-            submitScreening={submitScreening}
-          />
+      <div className="bento-container">
+        {/* Top Half: Upload + Chat */}
+        <div className="bento-top">
+          {/* Top Left: Upload & JD */}
+          <motion.div
+            className="bento-top-left"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <UploadZone
+              files={files}
+              setFiles={setFiles}
+              jobDescription={jobDescription}
+              setJobDescription={setJobDescription}
+              loading={loading}
+              error={error}
+              submitScreening={submitScreening}
+            />
+          </motion.div>
 
-          {results.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <Leaderboard results={results} />
-            </motion.div>
-          )}
+          {/* Top Right: Chat Panel */}
+          <motion.div
+            className="bento-top-right"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ChatPanel resumeContext={results} disabled={results.length === 0} useBrowserAI={useBrowserAI} />
+          </motion.div>
+        </div>
 
-          <div className="footer-label">Resume Screener AI · Neural Browser AI</div>
-        </motion.div>
+        {/* Bottom Half: Leaderboard */}
+        {results.length > 0 && (
+          <motion.div
+            className="bento-bottom"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Leaderboard results={results} />
+          </motion.div>
+        )}
 
-        {/* Right column — Chat */}
-        <motion.div
-          className="right-col"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <ChatPanel resumeContext={results} disabled={results.length === 0} useBrowserAI={useBrowserAI} />
-        </motion.div>
+        <div className="footer-label">Resume Screener AI · Neural Browser AI</div>
       </div>
     </div>
   );

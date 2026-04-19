@@ -55,7 +55,12 @@ export function Leaderboard({ results }: LeaderboardProps): JSX.Element {
       </div>
 
       <motion.div
-        style={{ display: "flex", flexDirection: "column", gap: 10 }}
+        style={{ 
+          display: "grid", 
+          gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))", 
+          gap: "16px",
+          alignItems: "start"
+        }}
         initial="hidden" animate="visible"
         variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
       >
